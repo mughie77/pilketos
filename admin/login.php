@@ -44,25 +44,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-    <!-- Animated background accents -->
-    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/30 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl pointer-events-none"></div>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <!-- Light mode ambient background glow -->
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-100 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-100 rounded-full blur-3xl pointer-events-none"></div>
 
     <div class="w-full max-w-md relative z-10">
         <!-- Logo & Title -->
         <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-indigo-500 to-purple-500 rounded-2xl shadow-lg shadow-indigo-500/30 mb-4 transform hover:scale-105 transition duration-300">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl shadow-lg shadow-indigo-500/20 mb-4 transform hover:scale-105 transition duration-300">
                 <i class="fa-solid fa-user-shield text-2xl text-white"></i>
             </div>
-            <h1 class="text-2xl font-bold text-white tracking-wide">Administrator Panel</h1>
-            <p class="text-slate-400 text-sm mt-1">E-Voting Pemilihan Ketua OSIS</p>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-wide">Administrator Panel</h1>
+            <p class="text-slate-500 text-sm mt-1">E-Voting Pemilihan Ketua OSIS</p>
         </div>
 
         <!-- Form Card -->
-        <div class="bg-slate-800/80 backdrop-blur-xl border border-slate-700/60 rounded-2xl p-8 shadow-2xl">
+        <div class="bg-white border border-slate-200/80 rounded-2xl p-8 shadow-xl shadow-slate-200/50">
             <?php if (!empty($error)): ?>
-                <div class="mb-6 bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl text-sm flex items-center space-x-2 animate-pulse">
+                <div class="mb-6 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm flex items-center space-x-2 animate-bounce">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <span><?= sanitize($error) ?></span>
                 </div>
@@ -70,38 +70,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <form action="" method="POST" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Username</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">Username</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <i class="fa-solid fa-user"></i>
                         </span>
                         <input type="text" name="username" required
-                            class="w-full pl-10 pr-4 py-3 bg-slate-900/80 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-white placeholder-slate-500 text-sm transition outline-none"
+                            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white focus:ring-2 focus:ring-indigo-600/10 rounded-xl text-slate-900 placeholder-slate-400 text-sm transition outline-none"
                             placeholder="Masukkan username admin">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Password</label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">Password</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                             <i class="fa-solid fa-lock"></i>
                         </span>
                         <input type="password" name="password" required
-                            class="w-full pl-10 pr-4 py-3 bg-slate-900/80 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-white placeholder-slate-500 text-sm transition outline-none"
+                            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white focus:ring-2 focus:ring-indigo-600/10 rounded-xl text-slate-900 placeholder-slate-400 text-sm transition outline-none"
                             placeholder="••••••••">
                     </div>
                 </div>
 
                 <button type="submit"
-                    class="w-full py-3.5 px-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/25 transition duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2">
+                    class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl shadow-md shadow-indigo-600/20 transition duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2">
                     <span>Masuk ke Panel</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </button>
             </form>
 
-            <div class="mt-6 text-center border-t border-slate-700/60 pt-6">
-                <a href="../index.php" class="inline-flex items-center text-xs text-slate-400 hover:text-indigo-400 transition">
+            <div class="mt-6 text-center border-t border-slate-100 pt-6">
+                <a href="../index.php" class="inline-flex items-center text-xs text-slate-500 hover:text-indigo-600 transition">
                     <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Halaman Utama / Realtime Count
                 </a>
             </div>

@@ -1,64 +1,13 @@
-[Sat Sep 19 10:32:09 2026] PHP 8.3.6 Development Server (http://127.0.0.1:8000) started
-[Sat Sep 19 10:32:40 2026] 127.0.0.1:40420 Accepted
-[Sat Sep 19 10:32:40 2026] 127.0.0.1:40420 [200]: GET /index.php
-[Sat Sep 19 10:32:40 2026] 127.0.0.1:40420 Closing
-[Sat Sep 19 10:32:41 2026] 127.0.0.1:40428 Accepted
-[Sat Sep 19 10:32:41 2026] 127.0.0.1:40428 [200]: GET /api/results.php
-[Sat Sep 19 10:32:41 2026] 127.0.0.1:40428 Closing
-[Sat Sep 19 10:32:43 2026] 127.0.0.1:40432 Accepted
-[Sat Sep 19 10:32:43 2026] 127.0.0.1:40432 [200]: GET /admin/login.php
-[Sat Sep 19 10:32:43 2026] 127.0.0.1:40432 Closing
-[Sat Sep 19 10:32:44 2026] 127.0.0.1:40434 Accepted
-[Sat Sep 19 10:32:44 2026] 127.0.0.1:40434 [302]: POST /admin/login.php
-[Sat Sep 19 10:32:44 2026] 127.0.0.1:40434 Closing
-[Sat Sep 19 10:32:44 2026] 127.0.0.1:40438 Accepted
-[Sat Sep 19 10:32:44 2026] 127.0.0.1:40438 [200]: GET /admin/dashboard.php
-[Sat Sep 19 10:32:44 2026] 127.0.0.1:40438 Closing
-[Sat Sep 19 10:32:45 2026] 127.0.0.1:40450 Accepted
-[Sat Sep 19 10:32:45 2026] 127.0.0.1:40450 [200]: GET /admin/candidates.php
-[Sat Sep 19 10:32:45 2026] 127.0.0.1:40450 Closing
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40460 Accepted
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40460 [302]: POST /admin/candidates.php
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40460 Closing
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40462 Accepted
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40462 [200]: GET /admin/candidates.php
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40462 Closing
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40466 Accepted
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40466 [200]: GET /uploads/candidates/paslon_1_1789813967.png
-[Sat Sep 19 10:32:47 2026] 127.0.0.1:40466 Closing
-[Sat Sep 19 10:32:48 2026] 127.0.0.1:40474 Accepted
-[Sat Sep 19 10:32:48 2026] 127.0.0.1:40474 [200]: GET /admin/voters.php
-[Sat Sep 19 10:32:48 2026] 127.0.0.1:40474 Closing
-[Sat Sep 19 10:32:49 2026] 127.0.0.1:40482 Accepted
-[Sat Sep 19 10:32:49 2026] 127.0.0.1:40482 [302]: POST /admin/voters.php
-[Sat Sep 19 10:32:49 2026] 127.0.0.1:40482 Closing
-[Sat Sep 19 10:32:49 2026] 127.0.0.1:40484 Accepted
-[Sat Sep 19 10:32:49 2026] 127.0.0.1:40484 [200]: GET /admin/voters.php
-[Sat Sep 19 10:32:49 2026] 127.0.0.1:40484 Closing
-[Sat Sep 19 10:32:50 2026] 127.0.0.1:42744 Accepted
-[Sat Sep 19 10:32:50 2026] 127.0.0.1:42744 [200]: GET /voter/login.php
-[Sat Sep 19 10:32:50 2026] 127.0.0.1:42744 Closing
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42748 Accepted
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42748 [302]: POST /voter/login.php
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42748 Closing
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42750 Accepted
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42750 [200]: GET /voter/vote.php
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42750 Closing
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42766 Accepted
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42766 [200]: GET /uploads/candidates/paslon_1_1789813967.png
-[Sat Sep 19 10:32:51 2026] 127.0.0.1:42766 Closing
-[Sat Sep 19 10:32:53 2026] 127.0.0.1:42782 Accepted
-[Sat Sep 19 10:32:53 2026] 127.0.0.1:42782 [200]: POST /voter/vote.php
-[Sat Sep 19 10:32:53 2026] 127.0.0.1:42782 Closing
-[Sat Sep 19 10:32:53 2026] 127.0.0.1:42794 Accepted
-[Sat Sep 19 10:32:53 2026] 127.0.0.1:42794 [200]: GET /uploads/candidates/paslon_1_1789813967.png
-[Sat Sep 19 10:32:53 2026] 127.0.0.1:42794 Closing
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42802 Accepted
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42802 [200]: GET /index.php
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42802 Closing
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42812 Accepted
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42812 [200]: GET /api/results.php
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42812 Closing
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42824 Accepted
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42824 [200]: GET /uploads/candidates/paslon_1_1789813967.png
-[Sat Sep 19 10:32:54 2026] 127.0.0.1:42824 Closing
+[Sat Sep 19 10:41:55 2026] PHP 8.3.6 Development Server (http://127.0.0.1:8000) started
+[Sat Sep 19 10:41:56 2026] 127.0.0.1:45020 Accepted
+[Sat Sep 19 10:41:56 2026] 127.0.0.1:45020 [200]: GET /index.php
+[Sat Sep 19 10:41:56 2026] 127.0.0.1:45020 Closing
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45028 Accepted
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45028 [200]: GET /api/results.php
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45028 Closing
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45040 Accepted
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45044 Accepted
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45040 [200]: GET /uploads/candidates/paslon_1_1789813967.png
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45044 [200]: GET /uploads/candidates/paslon_2_1789814425.png
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45040 Closing
+[Sat Sep 19 10:41:57 2026] 127.0.0.1:45044 Closing
