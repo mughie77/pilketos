@@ -78,6 +78,10 @@ $persentase = $totalPemilih > 0 ? round(($totalSudah / $totalPemilih) * 100, 1) 
                 <i class="fa-solid fa-address-card w-5 text-center"></i>
                 <span>Manajemen Pemilih</span>
             </a>
+            <a href="hash_generator.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+                <i class="fa-solid fa-key w-5 text-center"></i>
+                <span>Hash Generator</span>
+            </a>
         </aside>
 
         <!-- Main Dashboard Content -->
