@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config.php';
 $error = '';
 
 if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
-    redirect('/admin/dashboard.php');
+    redirect('admin/dashboard.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['admin_name'] = $admin['nama'];
             $_SESSION['admin_username'] = $admin['username'];
 
-            redirect('/admin/dashboard.php');
+            redirect('admin/dashboard.php');
         } else {
             $error = 'Username atau password salah!';
         }
@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <div class="mt-6 text-center border-t border-slate-100 pt-6">
-                <a href="../index.php" class="inline-flex items-center text-xs text-slate-500 hover:text-indigo-600 transition">
+                <a href="<?= base_url('index.php') ?>" class="inline-flex items-center text-xs text-slate-500 hover:text-indigo-600 transition">
                     <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Halaman Utama / Realtime Count
                 </a>
             </div>

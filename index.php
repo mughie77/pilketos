@@ -39,14 +39,14 @@ require_once __DIR__ . '/config.php';
             </div>
 
             <div class="flex items-center space-x-3">
-                <a href="hash_generator.php" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded-xl border border-slate-200 text-xs transition" title="Hash Generator">
+                <a href="<?= base_url('hash_generator.php') ?>" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded-xl border border-slate-200 text-xs transition" title="Hash Generator">
                     <i class="fa-solid fa-key text-sm"></i>
                 </a>
-                <a href="voter/login.php" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs sm:text-sm shadow-md shadow-indigo-600/20 transition duration-200 transform hover:-translate-y-0.5 flex items-center space-x-2">
+                <a href="<?= base_url('voter/login.php') ?>" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs sm:text-sm shadow-md shadow-indigo-600/20 transition duration-200 transform hover:-translate-y-0.5 flex items-center space-x-2">
                     <i class="fa-solid fa-vote-yea"></i>
                     <span>Masuk Bilik Suara</span>
                 </a>
-                <a href="admin/login.php" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded-xl border border-slate-200 text-xs transition" title="Login Admin">
+                <a href="<?= base_url('admin/login.php') ?>" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded-xl border border-slate-200 text-xs transition" title="Login Admin">
                     <i class="fa-solid fa-user-shield text-sm"></i>
                 </a>
             </div>
@@ -186,6 +186,7 @@ require_once __DIR__ . '/config.php';
     <script>
         let barChartInstance = null;
         let doughnutChartInstance = null;
+        const BASE_URL = '<?= base_url() ?>';
 
         const colorPalette = [
             { bg: 'rgba(79, 70, 229, 0.85)', border: '#4f46e5' },   // Indigo
@@ -196,7 +197,7 @@ require_once __DIR__ . '/config.php';
         ];
 
         function fetchResults() {
-            fetch('api/results.php')
+            fetch(BASE_URL + 'api/results.php')
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === 'success') {
@@ -314,6 +315,7 @@ require_once __DIR__ . '/config.php';
             let html = '';
             candidates.forEach((c, idx) => {
                 const color = colorPalette[idx % colorPalette.length].border;
+                const photoUrl = c.foto.startsWith('http') ? c.foto : BASE_URL + c.foto;
                 html += `
                     <div class="bg-white border border-slate-200/80 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
                         <div>
@@ -327,7 +329,7 @@ require_once __DIR__ . '/config.php';
                             <div class="p-6 space-y-4">
                                 <div class="flex items-center space-x-4">
                                     <div class="w-20 h-20 rounded-2xl overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-100">
-                                        <img src="${c.foto}" alt="${c.nama_ketua}" class="w-full h-full object-cover">
+                                        <img src="${photoUrl}" alt="${c.nama_ketua}" class="w-full h-full object-cover">
                                     </div>
                                     <div>
                                         <h3 class="text-base font-bold text-slate-900">${c.nama_ketua}</h3>

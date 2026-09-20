@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config.php';
 $error = '';
 
 if (isset($_SESSION['voter_logged_in']) && $_SESSION['voter_logged_in'] === true) {
-    redirect('/voter/vote.php');
+    redirect('voter/vote.php');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['voter_nisn'] = $voter['nisn'];
                 $_SESSION['voter_nama'] = $voter['nama'];
 
-                redirect('/voter/vote.php');
+                redirect('voter/vote.php');
             }
         } else {
             $error = 'NISN tidak terdaftar dalam DPT. Silakan hubungi panitia OSIS!';
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <div class="mt-6 text-center border-t border-slate-100 pt-6">
-                <a href="../index.php" class="inline-flex items-center text-xs text-slate-500 hover:text-indigo-600 transition">
+                <a href="<?= base_url('index.php') ?>" class="inline-flex items-center text-xs text-slate-500 hover:text-indigo-600 transition">
                     <i class="fa-solid fa-arrow-left mr-2"></i> Kembali ke Halaman Utama / Live Count
                 </a>
             </div>

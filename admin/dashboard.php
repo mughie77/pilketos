@@ -48,11 +48,11 @@ $persentase = $totalPemilih > 0 ? round(($totalSudah / $totalPemilih) * 100, 1) 
                         <i class="fa-solid fa-user-circle text-indigo-600"></i>
                         <span><?= sanitize($_SESSION['admin_name']) ?></span>
                     </div>
-                    <a href="../index.php" target="_blank" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1.5 border border-slate-200">
+                    <a href="<?= base_url('index.php') ?>" target="_blank" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1.5 border border-slate-200">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         <span>Lihat Live Count</span>
                     </a>
-                    <a href="logout.php" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-2 rounded-lg transition flex items-center space-x-1">
+                    <a href="<?= base_url('admin/logout.php') ?>" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-2 rounded-lg transition flex items-center space-x-1">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Keluar</span>
                     </a>
@@ -66,19 +66,19 @@ $persentase = $totalPemilih > 0 ? round(($totalSudah / $totalPemilih) * 100, 1) 
 
         <!-- Sidebar Navigation -->
         <aside class="w-full md:w-64 space-y-2">
-            <a href="dashboard.php" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-md shadow-indigo-600/20 transition">
+            <a href="<?= base_url('admin/dashboard.php') ?>" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-md shadow-indigo-600/20 transition">
                 <i class="fa-solid fa-gauge w-5 text-center"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="candidates.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('admin/candidates.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-users-gear w-5 text-center"></i>
                 <span>Manajemen Paslon</span>
             </a>
-            <a href="voters.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('admin/voters.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-address-card w-5 text-center"></i>
                 <span>Manajemen Pemilih</span>
             </a>
-            <a href="hash_generator.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('hash_generator.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-key w-5 text-center"></i>
                 <span>Hash Generator</span>
             </a>
@@ -148,7 +148,7 @@ $persentase = $totalPemilih > 0 ? round(($totalSudah / $totalPemilih) * 100, 1) 
 
             <!-- Quick Action Cards -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="candidates.php" class="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-6 transition shadow-sm group">
+                <a href="<?= base_url('admin/candidates.php') ?>" class="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-6 transition shadow-sm group">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 text-xl group-hover:scale-110 transition">
                             <i class="fa-solid fa-user-plus"></i>
@@ -160,7 +160,7 @@ $persentase = $totalPemilih > 0 ? round(($totalSudah / $totalPemilih) * 100, 1) 
                     </div>
                 </a>
 
-                <a href="voters.php" class="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-6 transition shadow-sm group">
+                <a href="<?= base_url('admin/voters.php') ?>" class="bg-white hover:bg-slate-50 border border-slate-200/80 rounded-2xl p-6 transition shadow-sm group">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 bg-purple-50 border border-purple-100 rounded-xl flex items-center justify-center text-purple-600 text-xl group-hover:scale-110 transition">
                             <i class="fa-solid fa-file-csv"></i>

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($inputText)) {
             </div>
 
             <div class="flex items-center space-x-3">
-                <a href="index.php" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition border border-slate-200 flex items-center space-x-2">
+                <a href="<?= base_url('index.php') ?>" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl text-xs transition border border-slate-200 flex items-center space-x-2">
                     <i class="fa-solid fa-arrow-left"></i>
                     <span>Kembali ke Live Count</span>
                 </a>
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($inputText)) {
                 <p class="text-xs text-slate-500 mt-1">Alat utilitas terbuka untuk membuat hash teks/password (password_hash Bcrypt, SHA-256, SHA-512, MD5) serta memverifikasi kesesuaian hash.</p>
             </div>
 
-            <form action="hash_generator.php" method="POST" class="space-y-5">
+            <form action="<?= base_url('hash_generator.php') ?>" method="POST" class="space-y-5">
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Teks / Password Utama *</label>
                     <input type="text" name="input_text" required value="<?= sanitize($inputText) ?>" autofocus

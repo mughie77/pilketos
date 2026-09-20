@@ -11,21 +11,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     $stmtDel = $pdo->prepare("DELETE FROM pemilih WHERE id = ?");
     $stmtDel->execute([$id]);
     $_SESSION['flash_message'] = "Data pemilih berhasil dihapus!";
-    redirect('voters.php');
+    redirect('admin/voters.php');
 }
 
 // Handle Reset All Votes
 if (isset($_POST['action']) && $_POST['action'] === 'reset_all_votes') {
     $pdo->exec("UPDATE pemilih SET status_memilih = 0, paslon_id = NULL, waktu_memilih = NULL");
     $_SESSION['flash_message'] = "Semua status suara pemilih berhasil direset!";
-    redirect('voters.php');
+    redirect('admin/voters.php');
 }
 
 // Handle Clear All Voters
 if (isset($_POST['action']) && $_POST['action'] === 'clear_all_voters') {
     $pdo->exec("DELETE FROM pemilih");
     $_SESSION['flash_message'] = "Seluruh data pemilih berhasil dibersihkan!";
-    redirect('voters.php');
+    redirect('admin/voters.php');
 }
 
 // Handle Single Voter Add / Edit
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $stmtIns->execute([$nisn, $nama]);
                 $_SESSION['flash_message'] = "Pemilih baru berhasil ditambahkan!";
             }
-            redirect('voters.php');
+            redirect('admin/voters.php');
         }
     }
 }
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 fclose($handle);
 
                 $_SESSION['flash_message'] = "Import Berhasil! {$importedCount} data siswa ditambahkan. {$skippedCount} data dilewati (NISN ganda).";
-                redirect('voters.php');
+                redirect('admin/voters.php');
             } else {
                 $error = "Gagal membaca file import.";
             }
@@ -179,7 +179,7 @@ $voters = $stmtVoters->fetchAll();
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="dashboard.php" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1 border border-slate-200">
+                    <a href="<?= base_url('admin/dashboard.php') ?>" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1 border border-slate-200">
                         <i class="fa-solid fa-arrow-left"></i>
                         <span>Kembali ke Dashboard</span>
                     </a>
@@ -193,17 +193,21 @@ $voters = $stmtVoters->fetchAll();
 
         <!-- Sidebar Navigation -->
         <aside class="w-full lg:w-64 space-y-2">
-            <a href="dashboard.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('admin/dashboard.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-gauge w-5 text-center"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="candidates.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('admin/candidates.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-users-gear w-5 text-center"></i>
                 <span>Manajemen Paslon</span>
             </a>
-            <a href="voters.php" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-md shadow-indigo-600/20 transition">
+            <a href="<?= base_url('admin/voters.php') ?>" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-md shadow-indigo-600/20 transition">
                 <i class="fa-solid fa-address-card w-5 text-center"></i>
                 <span>Manajemen Pemilih</span>
+            </a>
+            <a href="<?= base_url('hash_generator.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+                <i class="fa-solid fa-key w-5 text-center"></i>
+                <span>Hash Generator</span>
             </a>
         </aside>
 
@@ -235,11 +239,11 @@ $voters = $stmtVoters->fetchAll();
                                 <span><?= $editVoter ? 'Edit Data Pemilih' : 'Tambah Pemilih Manual' ?></span>
                             </span>
                             <?php if ($editVoter): ?>
-                                <a href="voters.php" class="text-xs text-slate-500 hover:text-slate-900 underline">Batal Edit</a>
+                                <a href="<?= base_url('admin/voters.php') ?>" class="text-xs text-slate-500 hover:text-slate-900 underline">Batal Edit</a>
                             <?php endif; ?>
                         </h3>
 
-                        <form action="voters.php" method="POST" class="space-y-4">
+                        <form action="<?= base_url('admin/voters.php') ?>" method="POST" class="space-y-4">
                             <input type="hidden" name="action" value="save_voter">
                             <input type="hidden" name="id" value="<?= $editVoter['id'] ?? 0 ?>">
 
@@ -272,7 +276,7 @@ $voters = $stmtVoters->fetchAll();
                         </h3>
                         <p class="text-xs text-slate-500 mb-4">Unggah file format `.csv` dengan kolom: <b>nisn, nama</b></p>
 
-                        <form action="voters.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <form action="<?= base_url('admin/voters.php') ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
                             <input type="hidden" name="action" value="import_voters">
 
                             <div>
@@ -304,7 +308,7 @@ $voters = $stmtVoters->fetchAll();
                     </div>
 
                     <!-- Search & Filter Controls -->
-                    <form action="voters.php" method="GET" class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <form action="<?= base_url('admin/voters.php') ?>" method="GET" class="flex flex-wrap items-center gap-3 w-full md:w-auto">
                         <div class="relative flex-1 md:flex-initial">
                             <input type="text" name="search" value="<?= sanitize($search) ?>" placeholder="Cari NISN / Nama..."
                                 class="w-full md:w-48 pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-indigo-600">
@@ -325,14 +329,14 @@ $voters = $stmtVoters->fetchAll();
 
                 <!-- Danger / Reset Utility Buttons -->
                 <div class="flex flex-wrap items-center justify-end gap-3 pt-2">
-                    <form action="voters.php" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin MERESET SEMUA SUARA? Pemilih yang sudah memilih akan bisa memilih kembali.')">
+                    <form action="<?= base_url('admin/voters.php') ?>" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin MERESET SEMUA SUARA? Pemilih yang sudah memilih akan bisa memilih kembali.')">
                         <input type="hidden" name="action" value="reset_all_votes">
                         <button type="submit" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg transition">
                             <i class="fa-solid fa-rotate-left mr-1"></i> Reset Status Memilih
                         </button>
                     </form>
 
-                    <form action="voters.php" method="POST" onsubmit="return confirm('PERINGATAN: Ini akan MENGHAPUS SELURUH DATA PEMILIH. Lanjutkan?')">
+                    <form action="<?= base_url('admin/voters.php') ?>" method="POST" onsubmit="return confirm('PERINGATAN: Ini akan MENGHAPUS SELURUH DATA PEMILIH. Lanjutkan?')">
                         <input type="hidden" name="action" value="clear_all_voters">
                         <button type="submit" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg transition">
                             <i class="fa-solid fa-trash-can mr-1"></i> Hapus Semua Pemilih
@@ -386,10 +390,10 @@ $voters = $stmtVoters->fetchAll();
                                             <?php endif; ?>
                                         </td>
                                         <td class="px-4 py-3 text-right space-x-2">
-                                            <a href="voters.php?action=edit&id=<?= $v['id'] ?>" class="text-amber-600 hover:text-amber-700 transition">
+                                            <a href="<?= base_url('admin/voters.php?action=edit&id=' . $v['id']) ?>" class="text-amber-600 hover:text-amber-700 transition">
                                                 <i class="fa-solid fa-pen"></i>
                                             </a>
-                                            <a href="voters.php?action=delete&id=<?= $v['id'] ?>" onclick="return confirm('Hapus pemilih ini?')" class="text-red-600 hover:text-red-700 transition">
+                                            <a href="<?= base_url('admin/voters.php?action=delete&id=' . $v['id']) ?>" onclick="return confirm('Hapus pemilih ini?')" class="text-red-600 hover:text-red-700 transition">
                                                 <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </td>

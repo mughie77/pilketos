@@ -12,7 +12,7 @@ $voter = $stmtCheck->fetch();
 if (!$voter || $voter['status_memilih'] == 1) {
     unset($_SESSION['voter_logged_in']);
     unset($_SESSION['voter_id']);
-    redirect('/voter/login.php');
+    redirect('voter/login.php');
 }
 
 $error = '';
@@ -76,7 +76,7 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                     <p class="text-slate-600 text-sm mt-2">Terima kasih telah berpartisipasi dalam Pemilihan Ketua OSIS. Pilihan Anda sangat berarti untuk kemajuan sekolah.</p>
                 </div>
                 <div class="pt-4">
-                    <a href="../index.php" class="inline-flex items-center justify-center w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition">
+                    <a href="<?= base_url('index.php') ?>" class="inline-flex items-center justify-center w-full py-3.5 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition">
                         <span>Lihat Hasil Perhitungan Suara</span>
                         <i class="fa-solid fa-arrow-right ml-2"></i>
                     </a>
@@ -148,7 +148,7 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                             <div class="p-6 space-y-5">
                                 <!-- Candidate Image -->
                                 <div class="w-full h-64 bg-slate-100 rounded-2xl overflow-hidden border border-slate-200 relative group-hover:border-indigo-200 transition">
-                                    <img src="../<?= sanitize($c['foto']) ?>" alt="Foto <?= sanitize($c['nama_ketua']) ?>" class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500">
+                                    <img src="<?= base_url(sanitize($c['foto'])) ?>" alt="Foto <?= sanitize($c['nama_ketua']) ?>" class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500">
                                 </div>
 
                                 <!-- Candidate Names -->

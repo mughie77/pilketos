@@ -23,7 +23,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
         $stmtDel->execute([$id]);
 
         $_SESSION['flash_message'] = "Paslon berhasil dihapus!";
-        redirect('candidates.php');
+        redirect('admin/candidates.php');
     }
 }
 
@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmtIns->execute([$nomor_urut, $nama_ketua, $nama_wakil, $fotoPath, $visi, $misi]);
                     $_SESSION['flash_message'] = "Paslon baru nomor urut {$nomor_urut} berhasil ditambahkan!";
                 }
-                redirect('candidates.php');
+                redirect('admin/candidates.php');
             }
         }
     }
@@ -149,7 +149,7 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="dashboard.php" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1 border border-slate-200">
+                    <a href="<?= base_url('admin/dashboard.php') ?>" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1 border border-slate-200">
                         <i class="fa-solid fa-arrow-left"></i>
                         <span>Kembali ke Dashboard</span>
                     </a>
@@ -163,17 +163,21 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
 
         <!-- Sidebar Navigation -->
         <aside class="w-full lg:w-64 space-y-2">
-            <a href="dashboard.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('admin/dashboard.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-gauge w-5 text-center"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="candidates.php" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-md shadow-indigo-600/20 transition">
+            <a href="<?= base_url('admin/candidates.php') ?>" class="flex items-center space-x-3 px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium shadow-md shadow-indigo-600/20 transition">
                 <i class="fa-solid fa-users-gear w-5 text-center"></i>
                 <span>Manajemen Paslon</span>
             </a>
-            <a href="voters.php" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+            <a href="<?= base_url('admin/voters.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
                 <i class="fa-solid fa-address-card w-5 text-center"></i>
                 <span>Manajemen Pemilih</span>
+            </a>
+            <a href="<?= base_url('hash_generator.php') ?>" class="flex items-center space-x-3 px-4 py-3 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl font-medium transition">
+                <i class="fa-solid fa-key w-5 text-center"></i>
+                <span>Hash Generator</span>
             </a>
         </aside>
 
@@ -204,11 +208,11 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                         <span><?= $editPaslon ? 'Edit Data Paslon' : 'Tambah Paslon Baru' ?></span>
                     </h2>
                     <?php if ($editPaslon): ?>
-                        <a href="candidates.php" class="text-xs text-slate-500 hover:text-slate-900 underline">Batal Edit</a>
+                        <a href="<?= base_url('admin/candidates.php') ?>" class="text-xs text-slate-500 hover:text-slate-900 underline">Batal Edit</a>
                     <?php endif; ?>
                 </div>
 
-                <form action="candidates.php" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <form action="<?= base_url('admin/candidates.php') ?>" method="POST" enctype="multipart/form-data" class="space-y-6">
                     <input type="hidden" name="id" value="<?= $editPaslon['id'] ?? 0 ?>">
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -237,7 +241,7 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                         </label>
                         <div class="flex items-center space-x-4">
                             <?php if ($editPaslon && !empty($editPaslon['foto'])): ?>
-                                <img src="../<?= sanitize($editPaslon['foto']) ?>" alt="Foto current" class="w-16 h-16 object-cover rounded-xl border border-slate-200">
+                                <img src="<?= base_url(sanitize($editPaslon['foto'])) ?>" alt="Foto current" class="w-16 h-16 object-cover rounded-xl border border-slate-200">
                             <?php endif; ?>
                             <input type="file" name="foto" accept="image/jpeg,image/png,image/webp" <?= $editPaslon ? '' : 'required' ?>
                                 class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-600 hover:file:bg-indigo-100 transition cursor-pointer">
@@ -285,10 +289,10 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                                             Nomor Urut 0<?= $c['nomor_urut'] ?>
                                         </span>
                                         <div class="flex items-center space-x-2">
-                                            <a href="candidates.php?action=edit&id=<?= $c['id'] ?>" class="text-xs bg-amber-50 text-amber-600 hover:bg-amber-100 px-3 py-1.5 rounded-lg border border-amber-200 transition">
+                                            <a href="<?= base_url('admin/candidates.php?action=edit&id=' . $c['id']) ?>" class="text-xs bg-amber-50 text-amber-600 hover:bg-amber-100 px-3 py-1.5 rounded-lg border border-amber-200 transition">
                                                 <i class="fa-solid fa-pen"></i> Edit
                                             </a>
-                                            <a href="candidates.php?action=delete&id=<?= $c['id'] ?>" onclick="return confirm('Yakin ingin menghapus paslon ini?')" class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition">
+                                            <a href="<?= base_url('admin/candidates.php?action=delete&id=' . $c['id']) ?>" onclick="return confirm('Yakin ingin menghapus paslon ini?')" class="text-xs bg-red-50 text-red-600 hover:bg-red-100 px-3 py-1.5 rounded-lg border border-red-200 transition">
                                                 <i class="fa-solid fa-trash"></i> Hapus
                                             </a>
                                         </div>
@@ -297,7 +301,7 @@ $candidates = $pdo->query("SELECT * FROM paslon ORDER BY nomor_urut ASC")->fetch
                                     <div class="p-6 space-y-4">
                                         <div class="flex items-center space-x-4">
                                             <div class="w-24 h-24 rounded-2xl overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-100">
-                                                <img src="../<?= sanitize($c['foto']) ?>" alt="Foto Paslon" class="w-full h-full object-cover">
+                                                <img src="<?= base_url(sanitize($c['foto'])) ?>" alt="Foto Paslon" class="w-full h-full object-cover">
                                             </div>
                                             <div>
                                                 <h4 class="text-lg font-bold text-slate-900"><?= sanitize($c['nama_ketua']) ?></h4>
