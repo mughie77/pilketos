@@ -1,16 +1,7 @@
-[Sat Sep 19 10:49:08 2026] PHP 8.3.6 Development Server (http://127.0.0.1:8000) started
-[Sat Sep 19 10:49:11 2026] 127.0.0.1:36546 Accepted
-[Sat Sep 19 10:49:11 2026] 127.0.0.1:36546 [200]: GET /admin/login.php
-[Sat Sep 19 10:49:11 2026] 127.0.0.1:36546 Closing
-[Sat Sep 19 10:49:13 2026] 127.0.0.1:36556 Accepted
-[Sat Sep 19 10:49:13 2026] 127.0.0.1:36556 [302]: POST /admin/login.php
-[Sat Sep 19 10:49:13 2026] 127.0.0.1:36556 Closing
-[Sat Sep 19 10:49:13 2026] 127.0.0.1:36570 Accepted
-[Sat Sep 19 10:49:13 2026] 127.0.0.1:36570 [200]: GET /admin/dashboard.php
-[Sat Sep 19 10:49:13 2026] 127.0.0.1:36570 Closing
-[Sat Sep 19 10:49:14 2026] 127.0.0.1:36580 Accepted
-[Sat Sep 19 10:49:14 2026] 127.0.0.1:36580 [200]: GET /admin/hash_generator.php
-[Sat Sep 19 10:49:14 2026] 127.0.0.1:36580 Closing
-[Sat Sep 19 10:49:15 2026] 127.0.0.1:36586 Accepted
-[Sat Sep 19 10:49:15 2026] 127.0.0.1:36586 [200]: POST /admin/hash_generator.php
-[Sat Sep 19 10:49:15 2026] 127.0.0.1:36586 Closing
+[Sun Sep 20 06:19:17 2026] PHP 8.3.6 Development Server (http://127.0.0.1:8000) started
+[Sun Sep 20 06:19:20 2026] 127.0.0.1:48864 Accepted
+[Sun Sep 20 06:19:20 2026] 127.0.0.1:48864 [200]: GET /hash_generator.php
+[Sun Sep 20 06:19:20 2026] 127.0.0.1:48864 Closing
+[Sun Sep 20 06:19:22 2026] 127.0.0.1:48868 Accepted
+[Sun Sep 20 06:19:22 2026] 127.0.0.1:48868 [200]: POST /hash_generator.php
+[Sun Sep 20 06:19:22 2026] 127.0.0.1:48868 Closing
