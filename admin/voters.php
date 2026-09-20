@@ -11,7 +11,43 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     $stmtDel = $pdo->prepare("DELETE FROM pemilih WHERE id = ?");
     $stmtDel->execute([$id]);
     $_SESSION['flash_message'] = "Data pemilih berhasil dihapus!";
-    redirect('admin/voters.php');
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    redirect('admin/voters.php?page=' . $page);
+}
+
+// Handle Reset Single Voter Vote
+if (isset($_GET['action']) && $_GET['action'] === 'reset_vote' && isset($_GET['id'])) {
+    $id = (int)$_GET['id'];
+    $stmtReset = $pdo->prepare("UPDATE pemilih SET status_memilih = 0, paslon_id = NULL, waktu_memilih = NULL WHERE id = ?");
+    $stmtReset->execute([$id]);
+    $_SESSION['flash_message'] = "Status suara pemilih berhasil direset!";
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    redirect('admin/voters.php?page=' . $page);
+}
+
+// Handle Batch Actions (Reset Selected or Delete Selected)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'batch_action') {
+    $voter_ids = $_POST['voter_ids'] ?? [];
+    $batch_type = $_POST['batch_type'] ?? '';
+
+    if (!empty($voter_ids) && is_array($voter_ids)) {
+        $voter_ids = array_map('intval', $voter_ids);
+        $placeholders = implode(',', array_fill(0, count($voter_ids), '?'));
+
+        if ($batch_type === 'reset') {
+            $stmt = $pdo->prepare("UPDATE pemilih SET status_memilih = 0, paslon_id = NULL, waktu_memilih = NULL WHERE id IN ($placeholders)");
+            $stmt->execute($voter_ids);
+            $_SESSION['flash_message'] = count($voter_ids) . " status suara pemilih terpilih berhasil direset!";
+        } elseif ($batch_type === 'delete') {
+            $stmt = $pdo->prepare("DELETE FROM pemilih WHERE id IN ($placeholders)");
+            $stmt->execute($voter_ids);
+            $_SESSION['flash_message'] = count($voter_ids) . " data pemilih terpilih berhasil dihapus!";
+        }
+    } else {
+        $_SESSION['flash_message'] = "Tidak ada pemilih yang dipilih!";
+    }
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    redirect('admin/voters.php?page=' . $page);
 }
 
 // Handle Reset All Votes
@@ -125,26 +161,42 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) 
     $editVoter = $stmtEdit->fetch();
 }
 
-// Search and Filter
+// Search, Filter, and Pagination
 $search = trim($_GET['search'] ?? '');
 $filter_status = $_GET['filter_status'] ?? 'all';
+$page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$per_page = 10;
+$offset = ($page - 1) * $per_page;
 
-$sql = "SELECT p.*, c.nomor_urut, c.nama_ketua FROM pemilih p LEFT JOIN paslon c ON p.paslon_id = c.id WHERE 1=1";
+$whereClause = " WHERE 1=1";
 $params = [];
 
 if (!empty($search)) {
-    $sql .= " AND (p.nisn LIKE ? OR p.nama LIKE ?)";
+    $whereClause .= " AND (p.nisn LIKE ? OR p.nama LIKE ?)";
     $params[] = "%{$search}%";
     $params[] = "%{$search}%";
 }
 
 if ($filter_status === 'voted') {
-    $sql .= " AND p.status_memilih = 1";
+    $whereClause .= " AND p.status_memilih = 1";
 } elseif ($filter_status === 'not_voted') {
-    $sql .= " AND p.status_memilih = 0";
+    $whereClause .= " AND p.status_memilih = 0";
 }
 
-$sql .= " ORDER BY p.id DESC";
+// Get Total Voters count for pagination
+$countSql = "SELECT COUNT(*) FROM pemilih p" . $whereClause;
+$stmtCount = $pdo->prepare($countSql);
+$stmtCount->execute($params);
+$total_voters = (int)$stmtCount->fetchColumn();
+$total_pages = max(1, ceil($total_voters / $per_page));
+
+if ($page > $total_pages) {
+    $page = $total_pages;
+    $offset = ($page - 1) * $per_page;
+}
+
+// Fetch Paginated Voters
+$sql = "SELECT p.*, c.nomor_urut, c.nama_ketua FROM pemilih p LEFT JOIN paslon c ON p.paslon_id = c.id" . $whereClause . " ORDER BY p.id DESC LIMIT " . (int)$per_page . " OFFSET " . (int)$offset;
 
 $stmtVoters = $pdo->prepare($sql);
 $stmtVoters->execute($params);
@@ -308,7 +360,7 @@ $voters = $stmtVoters->fetchAll();
                 <div class="flex flex-col md:flex-row items-center justify-between gap-4 pb-4 border-b border-slate-100">
                     <div>
                         <h3 class="text-lg font-bold text-slate-900">Daftar Pemilih Tetap (DPT)</h3>
-                        <p class="text-xs text-slate-500">Total terdaftar: <?= count($voters) ?> siswa</p>
+                        <p class="text-xs text-slate-500">Total terdaftar: <?= $total_voters ?> siswa (Halaman <?= $page ?> dari <?= $total_pages ?>)</p>
                     </div>
 
                     <!-- Search & Filter Controls -->
@@ -331,85 +383,197 @@ $voters = $stmtVoters->fetchAll();
                     </form>
                 </div>
 
-                <!-- Danger / Reset Utility Buttons -->
-                <div class="flex flex-wrap items-center justify-end gap-3 pt-2">
-                    <form action="<?= base_url('admin/voters.php') ?>" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin MERESET SEMUA SUARA? Pemilih yang sudah memilih akan bisa memilih kembali.')">
-                        <input type="hidden" name="action" value="reset_all_votes">
-                        <button type="submit" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg transition">
-                            <i class="fa-solid fa-rotate-left mr-1"></i> Reset Status Memilih
-                        </button>
-                    </form>
+                <!-- Batch Form for Checkbox Selections & Utility Buttons -->
+                <form id="batchForm" action="<?= base_url('admin/voters.php?page=' . $page) ?>" method="POST">
+                    <input type="hidden" name="action" value="batch_action">
+                    <input type="hidden" name="batch_type" id="batchType" value="">
 
-                    <form action="<?= base_url('admin/voters.php') ?>" method="POST" onsubmit="return confirm('PERINGATAN: Ini akan MENGHAPUS SELURUH DATA PEMILIH. Lanjutkan?')">
-                        <input type="hidden" name="action" value="clear_all_voters">
-                        <button type="submit" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg transition">
-                            <i class="fa-solid fa-trash-can mr-1"></i> Hapus Semua Pemilih
-                        </button>
-                    </form>
-                </div>
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs text-slate-500 font-medium">Aksi Centang:</span>
+                            <button type="button" onclick="submitBatch('reset')" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-1.5 rounded-lg transition font-medium flex items-center space-x-1">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Reset Status Pemilih Terpilih</span>
+                            </button>
+                            <button type="button" onclick="submitBatch('delete')" class="text-xs bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg transition font-medium flex items-center space-x-1">
+                                <i class="fa-solid fa-trash"></i>
+                                <span>Hapus Pemilih Terpilih</span>
+                            </button>
+                        </div>
 
-                <!-- Table -->
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
-                            <tr>
-                                <th class="px-4 py-3">No</th>
-                                <th class="px-4 py-3">NISN (Username)</th>
-                                <th class="px-4 py-3">Nama Siswa</th>
-                                <th class="px-4 py-3 text-center">Status</th>
-                                <th class="px-4 py-3">Pilihan / Waktu</th>
-                                <th class="px-4 py-3 text-right">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-100 text-slate-700">
-                            <?php if (empty($voters)): ?>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button type="button" onclick="confirmResetAll()" class="text-xs bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-lg transition font-medium">
+                                <i class="fa-solid fa-arrows-rotate mr-1"></i> Reset SEMUA Pemilih
+                            </button>
+                            <button type="button" onclick="confirmClearAll()" class="text-xs bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 px-3 py-1.5 rounded-lg transition font-medium">
+                                <i class="fa-solid fa-trash-can mr-1"></i> Hapus SEMUA Pemilih
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-slate-500 uppercase font-semibold border-b border-slate-200">
                                 <tr>
-                                    <td colspan="6" class="px-4 py-8 text-center text-slate-400">
-                                        Tidak ada data pemilih ditemukan.
-                                    </td>
+                                    <th class="px-3 py-3 w-8 text-center">
+                                        <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)" class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                    </th>
+                                    <th class="px-4 py-3">No</th>
+                                    <th class="px-4 py-3">NISN (Username)</th>
+                                    <th class="px-4 py-3">Nama Siswa</th>
+                                    <th class="px-4 py-3 text-center">Status</th>
+                                    <th class="px-4 py-3">Pilihan / Waktu</th>
+                                    <th class="px-4 py-3 text-right">Aksi</th>
                                 </tr>
-                            <?php else: ?>
-                                <?php $no = 1; foreach ($voters as $v): ?>
-                                    <tr class="hover:bg-slate-50 transition">
-                                        <td class="px-4 py-3 font-medium text-slate-400"><?= $no++ ?></td>
-                                        <td class="px-4 py-3 font-mono text-indigo-600 font-semibold"><?= sanitize($v['nisn']) ?></td>
-                                        <td class="px-4 py-3 font-medium text-slate-900"><?= sanitize($v['nama']) ?></td>
-                                        <td class="px-4 py-3 text-center">
-                                            <?php if ($v['status_memilih'] == 1): ?>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
-                                                    <i class="fa-solid fa-check mr-1 text-2xs"></i> Sudah
-                                                </span>
-                                            <?php else: ?>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
-                                                    <i class="fa-solid fa-clock mr-1 text-2xs"></i> Belum
-                                                </span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="px-4 py-3 text-slate-500">
-                                            <?php if ($v['status_memilih'] == 1): ?>
-                                                <span class="text-slate-900 font-medium">Paslon 0<?= sanitize($v['nomor_urut']) ?></span>
-                                                <span class="block text-2xs text-slate-400"><?= sanitize($v['waktu_memilih']) ?></span>
-                                            <?php else: ?>
-                                                -
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="px-4 py-3 text-right space-x-2">
-                                            <a href="<?= base_url('admin/voters.php?action=edit&id=' . $v['id']) ?>" class="text-amber-600 hover:text-amber-700 transition">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </a>
-                                            <a href="<?= base_url('admin/voters.php?action=delete&id=' . $v['id']) ?>" onclick="return confirm('Hapus pemilih ini?')" class="text-red-600 hover:text-red-700 transition">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-700">
+                                <?php if (empty($voters)): ?>
+                                    <tr>
+                                        <td colspan="7" class="px-4 py-8 text-center text-slate-400">
+                                            Tidak ada data pemilih ditemukan.
                                         </td>
                                     </tr>
-                                <?php endforeach; ?>
+                                <?php else: ?>
+                                    <?php $no = $offset + 1; foreach ($voters as $v): ?>
+                                        <tr class="hover:bg-slate-50 transition">
+                                            <td class="px-3 py-3 text-center">
+                                                <input type="checkbox" name="voter_ids[]" value="<?= $v['id'] ?>" class="voter-checkbox rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                                            </td>
+                                            <td class="px-4 py-3 font-medium text-slate-400"><?= $no++ ?></td>
+                                            <td class="px-4 py-3 font-mono text-indigo-600 font-semibold"><?= sanitize($v['nisn']) ?></td>
+                                            <td class="px-4 py-3 font-medium text-slate-900"><?= sanitize($v['nama']) ?></td>
+                                            <td class="px-4 py-3 text-center">
+                                                <?php if ($v['status_memilih'] == 1): ?>
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                                        <i class="fa-solid fa-check mr-1 text-2xs"></i> Sudah
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-200">
+                                                        <i class="fa-solid fa-clock mr-1 text-2xs"></i> Belum
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="px-4 py-3 text-slate-500">
+                                                <?php if ($v['status_memilih'] == 1): ?>
+                                                    <span class="text-slate-900 font-medium">Paslon 0<?= sanitize($v['nomor_urut']) ?></span>
+                                                    <span class="block text-2xs text-slate-400"><?= sanitize($v['waktu_memilih']) ?></span>
+                                                <?php else: ?>
+                                                    -
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="px-4 py-3 text-right space-x-2">
+                                                <?php if ($v['status_memilih'] == 1): ?>
+                                                    <a href="<?= base_url('admin/voters.php?action=reset_vote&id=' . $v['id'] . '&page=' . $page) ?>" onclick="return confirm('Reset status suara siswa ini?')" title="Reset Suara Siswa Ini" class="text-indigo-600 hover:text-indigo-800 transition px-1.5 py-1 bg-indigo-50 rounded border border-indigo-200">
+                                                        <i class="fa-solid fa-rotate-left"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <a href="<?= base_url('admin/voters.php?action=edit&id=' . $v['id']) ?>" title="Edit Data Siswa" class="text-amber-600 hover:text-amber-700 transition">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </a>
+                                                <a href="<?= base_url('admin/voters.php?action=delete&id=' . $v['id'] . '&page=' . $page) ?>" onclick="return confirm('Hapus pemilih ini?')" title="Hapus Siswa" class="text-red-600 hover:text-red-700 transition">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+                <!-- Hidden Reset/Clear All Forms -->
+                <form id="resetAllForm" action="<?= base_url('admin/voters.php') ?>" method="POST" class="hidden">
+                    <input type="hidden" name="action" value="reset_all_votes">
+                </form>
+
+                <form id="clearAllForm" action="<?= base_url('admin/voters.php') ?>" method="POST" class="hidden">
+                    <input type="hidden" name="action" value="clear_all_voters">
+                </form>
+
+                <!-- Pagination Bar -->
+                <?php if ($total_pages > 1): ?>
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100 text-xs">
+                        <p class="text-slate-500">
+                            Menampilkan <span class="font-semibold text-slate-800"><?= $offset + 1 ?></span> - <span class="font-semibold text-slate-800"><?= min($offset + $per_page, $total_voters) ?></span> dari <span class="font-semibold text-slate-800"><?= $total_voters ?></span> pemilih
+                        </p>
+
+                        <div class="flex items-center space-x-1">
+                            <!-- Prev Page -->
+                            <?php if ($page > 1): ?>
+                                <a href="<?= base_url('admin/voters.php?page=' . ($page - 1) . '&search=' . urlencode($search) . '&filter_status=' . urlencode($filter_status)) ?>" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition border border-slate-200 font-medium">
+                                    <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                                </a>
+                            <?php else: ?>
+                                <span class="px-3 py-1.5 bg-slate-50 text-slate-300 rounded-lg border border-slate-200 cursor-not-allowed">
+                                    <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                                </span>
                             <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+
+                            <!-- Page Numbers -->
+                            <?php for ($p = 1; $p <= $total_pages; $p++): ?>
+                                <?php if ($p == $page): ?>
+                                    <span class="px-3 py-1.5 bg-indigo-600 text-white rounded-lg font-bold shadow-sm"><?= $p ?></span>
+                                <?php elseif ($p == 1 || $p == $total_pages || abs($p - $page) <= 2): ?>
+                                    <a href="<?= base_url('admin/voters.php?page=' . $p . '&search=' . urlencode($search) . '&filter_status=' . urlencode($filter_status)) ?>" class="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg transition border border-slate-200 font-medium"><?= $p ?></a>
+                                <?php elseif (abs($p - $page) == 3): ?>
+                                    <span class="px-2 py-1.5 text-slate-400">...</span>
+                                <?php endif; ?>
+                            <?php endfor; ?>
+
+                            <!-- Next Page -->
+                            <?php if ($page < $total_pages): ?>
+                                <a href="<?= base_url('admin/voters.php?page=' . ($page + 1) . '&search=' . urlencode($search) . '&filter_status=' . urlencode($filter_status)) ?>" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg transition border border-slate-200 font-medium">
+                                    Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                                </a>
+                            <?php else: ?>
+                                <span class="px-3 py-1.5 bg-slate-50 text-slate-300 rounded-lg border border-slate-200 cursor-not-allowed">
+                                    Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                                </span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
             </div>
         </main>
     </div>
+
+    <script>
+        function toggleSelectAll(source) {
+            const checkboxes = document.querySelectorAll('.voter-checkbox');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+        }
+
+        function submitBatch(actionType) {
+            const checkedCount = document.querySelectorAll('.voter-checkbox:checked').length;
+            if (checkedCount === 0) {
+                alert('Pilih setidaknya satu pemilih dengan mencentang kotak.');
+                return;
+            }
+
+            const message = actionType === 'reset'
+                ? `Apakah Anda yakin ingin MERESET status suara ${checkedCount} pemilih terpilih?`
+                : `Apakah Anda yakin ingin MENGHAPUS ${checkedCount} data pemilih terpilih?`;
+
+            if (confirm(message)) {
+                document.getElementById('batchType').value = actionType;
+                document.getElementById('batchForm').submit();
+            }
+        }
+
+        function confirmResetAll() {
+            if (confirm('Apakah Anda yakin ingin MERESET SEMUA SUARA PEMILIH? Pemilih yang sudah memilih akan bisa memilih kembali.')) {
+                document.getElementById('resetAllForm').submit();
+            }
+        }
+
+        function confirmClearAll() {
+            if (confirm('PERINGATAN DANGER: Seluruh data pemilih akan DIHAPUS PERMANEN. Lanjutkan?')) {
+                document.getElementById('clearAllForm').submit();
+            }
+        }
+    </script>
 </body>
 </html>

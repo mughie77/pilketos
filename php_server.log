@@ -1,0 +1,19 @@
+[Sun Sep 20 06:50:04 2026] PHP 8.3.6 Development Server (http://0.0.0.0:8000) started
+[Sun Sep 20 06:50:06 2026] 127.0.0.1:44498 Accepted
+[Sun Sep 20 06:50:06 2026] 127.0.0.1:44498 [200]: GET /admin/login.php
+[Sun Sep 20 06:50:06 2026] 127.0.0.1:44498 Closing
+[Sun Sep 20 06:50:07 2026] 127.0.0.1:44512 Accepted
+[Sun Sep 20 06:50:07 2026] 127.0.0.1:44512 [200]: POST /admin/login.php
+[Sun Sep 20 06:50:07 2026] 127.0.0.1:44512 Closing
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44464 Accepted
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44464 [200]: GET /admin/login.php
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44464 Closing
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44478 Accepted
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44478 [302]: POST /admin/login.php
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44478 Closing
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44480 Accepted
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44480 [200]: GET /admin/dashboard.php
+[Sun Sep 20 06:50:53 2026] 127.0.0.1:44480 Closing
+[Sun Sep 20 06:50:54 2026] 127.0.0.1:44486 Accepted
+[Sun Sep 20 06:50:54 2026] 127.0.0.1:44486 [200]: GET /admin/voters.php
+[Sun Sep 20 06:50:54 2026] 127.0.0.1:44486 Closing
