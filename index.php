@@ -39,9 +39,6 @@ require_once __DIR__ . '/config.php';
             </div>
 
             <div class="flex items-center space-x-3">
-                <a href="<?= base_url('hash_generator.php') ?>" class="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 rounded-xl border border-slate-200 text-xs transition" title="Hash Generator">
-                    <i class="fa-solid fa-key text-sm"></i>
-                </a>
                 <a href="<?= base_url('voter/login.php') ?>" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs sm:text-sm shadow-md shadow-indigo-600/20 transition duration-200 transform hover:-translate-y-0.5 flex items-center space-x-2">
                     <i class="fa-solid fa-vote-yea"></i>
                     <span>Masuk Bilik Suara</span>

@@ -178,7 +178,11 @@ $voters = $stmtVoters->fetchAll();
                         <span class="text-xs text-slate-500">Daftar Pemilih Tetap (DPT) & Import NISN</span>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-3">
+                    <a href="<?= base_url('admin/print_cards.php') ?>" target="_blank" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-3.5 py-2 rounded-lg transition flex items-center space-x-1.5 shadow-sm">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Cetak Kartu Pemilih (A4 PDF)</span>
+                    </a>
                     <a href="<?= base_url('admin/dashboard.php') ?>" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-lg transition flex items-center space-x-1 border border-slate-200">
                         <i class="fa-solid fa-arrow-left"></i>
                         <span>Kembali ke Dashboard</span>
