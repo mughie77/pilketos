@@ -103,25 +103,33 @@ $voters = $stmt->fetchAll();
                         </span>
                     </div>
 
-                    <!-- Student Details -->
-                    <div class="space-y-1.5 py-1">
-                        <div class="flex items-baseline">
-                            <span class="text-2xs font-bold text-slate-400 uppercase w-20 flex-shrink-0">Nama Siswa</span>
-                            <span class="text-2xs text-slate-400 mr-2">:</span>
-                            <span class="text-xs font-bold text-slate-900 truncate"><?= sanitize($v['nama']) ?></span>
+                    <!-- Student Details & QR Code Section -->
+                    <div class="flex items-center justify-between gap-2 py-1">
+                        <div class="space-y-1.5 flex-1 min-w-0">
+                            <div class="flex items-baseline">
+                                <span class="text-2xs font-bold text-slate-400 uppercase w-20 flex-shrink-0">Nama Siswa</span>
+                                <span class="text-2xs text-slate-400 mr-1.5">:</span>
+                                <span class="text-xs font-bold text-slate-900 truncate"><?= sanitize($v['nama']) ?></span>
+                            </div>
+
+                            <div class="flex items-baseline">
+                                <span class="text-2xs font-bold text-slate-400 uppercase w-20 flex-shrink-0">NISN (Login)</span>
+                                <span class="text-2xs text-slate-400 mr-1.5">:</span>
+                                <span class="text-xs font-mono font-extrabold text-indigo-600 tracking-wider bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100"><?= sanitize($v['nisn']) ?></span>
+                            </div>
                         </div>
 
-                        <div class="flex items-baseline">
-                            <span class="text-2xs font-bold text-slate-400 uppercase w-20 flex-shrink-0">NISN (Login)</span>
-                            <span class="text-2xs text-slate-400 mr-2">:</span>
-                            <span class="text-xs font-mono font-extrabold text-indigo-600 tracking-wider bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-100"><?= sanitize($v['nisn']) ?></span>
+                        <!-- QR Code Container -->
+                        <div class="flex-shrink-0 flex flex-col items-center justify-center p-1 bg-slate-50 border border-slate-200 rounded-xl">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?= urlencode($v['nisn']) ?>" alt="QR Login <?= sanitize($v['nisn']) ?>" class="w-14 h-14 object-contain rounded">
+                            <span class="text-3xs text-slate-400 font-mono mt-0.5">Scan QR</span>
                         </div>
                     </div>
 
-                    <!-- Footer Instructions & QR/Icon Placeholder -->
+                    <!-- Footer Instructions -->
                     <div class="pt-2 border-t border-slate-100 flex items-center justify-between mt-1">
                         <p class="text-3xs text-slate-400 leading-tight">
-                            * Gunakan NISN diatas sebagai <strong class="text-slate-600">Username Login</strong> di bilik suara web.
+                            * Gunakan NISN atau <strong class="text-slate-600">Scan QR Code</strong> diatas untuk login ke bilik suara web.
                         </p>
                         <div class="text-right flex-shrink-0">
                             <span class="text-3xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded">

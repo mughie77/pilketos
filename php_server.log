@@ -17,3 +17,54 @@
 [Sun Sep 20 06:50:54 2026] 127.0.0.1:44486 Accepted
 [Sun Sep 20 06:50:54 2026] 127.0.0.1:44486 [200]: GET /admin/voters.php
 [Sun Sep 20 06:50:54 2026] 127.0.0.1:44486 Closing
+[Sun Sep 20 06:57:19 2026] 127.0.0.1:53114 Accepted
+[Sun Sep 20 06:57:19 2026] 127.0.0.1:53114 [200]: GET /voter/login.php
+[Sun Sep 20 06:57:19 2026] 127.0.0.1:53114 Closing
+[Sun Sep 20 06:57:21 2026] 127.0.0.1:42452 Accepted
+[Sun Sep 20 06:57:21 2026] 127.0.0.1:42452 [200]: GET /api/check_voter.php?nisn=0051234567
+[Sun Sep 20 06:57:21 2026] 127.0.0.1:42452 Closing
+[Sun Sep 20 06:57:21 2026] 127.0.0.1:42460 Accepted
+[Sun Sep 20 06:57:21 2026] 127.0.0.1:42460 [200]: POST /voter/login.php
+[Sun Sep 20 06:57:21 2026] 127.0.0.1:42460 Closing
+[Sun Sep 20 06:58:22 2026] 127.0.0.1:47532 Accepted
+[Sun Sep 20 06:58:22 2026] 127.0.0.1:47532 [200]: GET /voter/login.php
+[Sun Sep 20 06:58:22 2026] 127.0.0.1:47532 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47534 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47534 [200]: GET /api/check_voter.php?nisn=0088776655
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47534 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47544 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47544 [302]: POST /voter/login.php
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47544 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47560 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47560 [200]: GET /voter/vote.php
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47560 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47564 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47566 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47564 [200]: GET /uploads/candidates/paslon_1_1789813967.png
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47566 [200]: GET /uploads/candidates/paslon_2_1789814425.png
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47564 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47566 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47578 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47578 [302]: GET /voter/login.php
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47578 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47582 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47582 [200]: GET /voter/vote.php
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47582 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47592 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47598 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47592 [200]: GET /uploads/candidates/paslon_1_1789813967.png
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47598 [200]: GET /uploads/candidates/paslon_2_1789814425.png
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47592 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47598 Closing
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47608 Accepted
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47608 [200]: GET /admin/login.php
+[Sun Sep 20 06:58:24 2026] 127.0.0.1:47608 Closing
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47624 Accepted
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47624 [302]: POST /admin/login.php
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47624 Closing
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47636 Accepted
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47636 [200]: GET /admin/dashboard.php
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47636 Closing
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47642 Accepted
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47642 [200]: GET /admin/print_cards.php
+[Sun Sep 20 06:58:25 2026] 127.0.0.1:47642 Closing
