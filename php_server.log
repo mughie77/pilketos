@@ -68,3 +68,18 @@
 [Sun Sep 20 06:58:25 2026] 127.0.0.1:47642 Accepted
 [Sun Sep 20 06:58:25 2026] 127.0.0.1:47642 [200]: GET /admin/print_cards.php
 [Sun Sep 20 06:58:25 2026] 127.0.0.1:47642 Closing
+[Sun Sep 20 07:08:10 2026] 127.0.0.1:36452 Accepted
+[Sun Sep 20 07:08:10 2026] 127.0.0.1:36452 [200]: GET /admin/login.php
+[Sun Sep 20 07:08:10 2026] 127.0.0.1:36452 Closing
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36464 Accepted
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36464 [302]: POST /admin/login.php
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36464 Closing
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36474 Accepted
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36474 [200]: GET /admin/dashboard.php
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36474 Closing
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36478 Accepted
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36478 [200]: GET /admin/voters.php
+[Sun Sep 20 07:08:11 2026] 127.0.0.1:36478 Closing
+[Sun Sep 20 07:08:12 2026] 127.0.0.1:36494 Accepted
+[Sun Sep 20 07:08:12 2026] 127.0.0.1:36494 [200]: GET /admin/print_cards.php
+[Sun Sep 20 07:08:12 2026] 127.0.0.1:36494 Closing

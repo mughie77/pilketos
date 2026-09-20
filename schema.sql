@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `pemilih` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `nisn` VARCHAR(30) NOT NULL UNIQUE,
     `nama` VARCHAR(100) NOT NULL,
+    `kelas` VARCHAR(50) DEFAULT 'Siswa',
     `status_memilih` TINYINT(1) DEFAULT 0,
     `paslon_id` INT DEFAULT NULL,
     `waktu_memilih` DATETIME DEFAULT NULL,

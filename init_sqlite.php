@@ -27,13 +27,22 @@ if ($db_driver === 'sqlite') {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nisn TEXT NOT NULL UNIQUE,
             nama TEXT NOT NULL,
+            kelas TEXT DEFAULT 'Siswa',
             status_memilih INTEGER DEFAULT 0,
             paslon_id INTEGER DEFAULT NULL,
             waktu_memilih DATETIME DEFAULT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (paslon_id) REFERENCES paslon(id) ON DELETE SET NULL
         );
+
     ");
+
+    // Add kelas column to pemilih if missing in existing table
+    try {
+        $pdo->exec("ALTER TABLE pemilih ADD COLUMN kelas TEXT DEFAULT 'Siswa'");
+    } catch (PDOException $e) {
+        // Column already exists
+    }
 
     // Insert default admin if not exists
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM admins WHERE username = 'admin'");

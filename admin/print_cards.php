@@ -105,11 +105,17 @@ $voters = $stmt->fetchAll();
 
                     <!-- Student Details & QR Code Section -->
                     <div class="flex items-center justify-between gap-2 py-1">
-                        <div class="space-y-1.5 flex-1 min-w-0">
+                        <div class="space-y-1 flex-1 min-w-0">
                             <div class="flex items-baseline">
                                 <span class="text-2xs font-bold text-slate-400 uppercase w-20 flex-shrink-0">Nama Siswa</span>
                                 <span class="text-2xs text-slate-400 mr-1.5">:</span>
                                 <span class="text-xs font-bold text-slate-900 truncate"><?= sanitize($v['nama']) ?></span>
+                            </div>
+
+                            <div class="flex items-baseline">
+                                <span class="text-2xs font-bold text-slate-400 uppercase w-20 flex-shrink-0">Kelas/Peran</span>
+                                <span class="text-2xs text-slate-400 mr-1.5">:</span>
+                                <span class="text-2xs font-semibold text-slate-700 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200"><?= sanitize($v['kelas'] ?? 'Siswa') ?></span>
                             </div>
 
                             <div class="flex items-baseline">

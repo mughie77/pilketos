@@ -69,6 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $id    = (int)($_POST['id'] ?? 0);
     $nisn  = trim($_POST['nisn'] ?? '');
     $nama  = trim($_POST['nama'] ?? '');
+    $kelas = trim($_POST['kelas'] ?? 'Siswa');
+    if (empty($kelas)) $kelas = 'Siswa';
 
     if (empty($nisn) || empty($nama)) {
         $error = "NISN dan Nama Pemilih wajib diisi!";
@@ -80,12 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             $error = "NISN '{$nisn}' telah digunakan oleh pemilih lain!";
         } else {
             if ($id > 0) {
-                $stmtUpd = $pdo->prepare("UPDATE pemilih SET nisn = ?, nama = ? WHERE id = ?");
-                $stmtUpd->execute([$nisn, $nama, $id]);
+                $stmtUpd = $pdo->prepare("UPDATE pemilih SET nisn = ?, nama = ?, kelas = ? WHERE id = ?");
+                $stmtUpd->execute([$nisn, $nama, $kelas, $id]);
                 $_SESSION['flash_message'] = "Data pemilih berhasil diperbarui!";
             } else {
-                $stmtIns = $pdo->prepare("INSERT INTO pemilih (nisn, nama) VALUES (?, ?)");
-                $stmtIns->execute([$nisn, $nama]);
+                $stmtIns = $pdo->prepare("INSERT INTO pemilih (nisn, nama, kelas) VALUES (?, ?, ?)");
+                $stmtIns->execute([$nisn, $nama, $kelas]);
                 $_SESSION['flash_message'] = "Pemilih baru berhasil ditambahkan!";
             }
             redirect('admin/voters.php');
@@ -109,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 $skippedCount = 0;
                 $row = 0;
 
-                $stmtIns = $pdo->prepare("INSERT INTO pemilih (nisn, nama) VALUES (?, ?)");
+                $stmtIns = $pdo->prepare("INSERT INTO pemilih (nisn, nama, kelas) VALUES (?, ?, ?)");
                 $stmtCheck = $pdo->prepare("SELECT id FROM pemilih WHERE nisn = ?");
 
                 while (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -122,13 +124,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                         $data = explode(';', $data[0]);
                     }
 
-                    $nisn = trim($data[0] ?? '');
-                    $nama = trim($data[1] ?? $nisn);
+                    $nisn  = trim($data[0] ?? '');
+                    $nama  = trim($data[1] ?? $nisn);
+                    $kelas = trim($data[2] ?? 'Siswa');
+                    if (empty($kelas)) $kelas = 'Siswa';
 
                     if (!empty($nisn)) {
                         $stmtCheck->execute([$nisn]);
                         if (!$stmtCheck->fetch()) {
-                            $stmtIns->execute([$nisn, $nama]);
+                            $stmtIns->execute([$nisn, $nama, $kelas]);
                             $importedCount++;
                         } else {
                             $skippedCount++;
@@ -172,7 +176,8 @@ $whereClause = " WHERE 1=1";
 $params = [];
 
 if (!empty($search)) {
-    $whereClause .= " AND (p.nisn LIKE ? OR p.nama LIKE ?)";
+    $whereClause .= " AND (p.nisn LIKE ? OR p.nama LIKE ? OR p.kelas LIKE ?)";
+    $params[] = "%{$search}%";
     $params[] = "%{$search}%";
     $params[] = "%{$search}%";
 }
@@ -315,6 +320,12 @@ $voters = $stmtVoters->fetchAll();
                                     class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white rounded-xl text-slate-900 text-sm outline-none transition" placeholder="Contoh: Ahmad Rizky">
                             </div>
 
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Kelas / Peran</label>
+                                <input type="text" name="kelas" value="<?= sanitize($editVoter['kelas'] ?? 'Siswa') ?>"
+                                    class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 focus:border-indigo-600 focus:bg-white rounded-xl text-slate-900 text-sm outline-none transition" placeholder="Contoh: XII RPL 1 / Guru / Staf">
+                            </div>
+
                             <button type="submit" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-sm">
                                 <i class="fa-solid fa-floppy-disk"></i>
                                 <span><?= $editVoter ? 'Simpan Perubahan' : 'Tambah Pemilih' ?></span>
@@ -330,7 +341,7 @@ $voters = $stmtVoters->fetchAll();
                             <i class="fa-solid fa-file-import text-purple-600"></i>
                             <span>Import Data Pemilih (CSV/Excel)</span>
                         </h3>
-                        <p class="text-xs text-slate-500 mb-4">Unggah file format `.csv` dengan kolom: <b>nisn, nama</b></p>
+                        <p class="text-xs text-slate-500 mb-4">Unggah file format `.csv` dengan kolom: <b>nisn, nama, kelas</b></p>
 
                         <form action="<?= base_url('admin/voters.php') ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
                             <input type="hidden" name="action" value="import_voters">
@@ -342,7 +353,7 @@ $voters = $stmtVoters->fetchAll();
 
                             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs text-slate-600 space-y-1">
                                 <p class="font-medium text-slate-700"><i class="fa-solid fa-circle-info mr-1 text-indigo-600"></i> Format contoh CSV:</p>
-                                <code class="block text-slate-800 font-mono">nisn,nama<br>0051112233,Budi Santoso<br>0054445566,Siti Rahma</code>
+                                <code class="block text-slate-800 font-mono">nisn,nama,kelas<br>0051112233,Budi Santoso,XII RPL 1<br>0054445566,Siti Rahma,Guru</code>
                             </div>
 
                             <button type="submit" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-xl transition text-sm flex items-center justify-center space-x-2 shadow-sm">
@@ -422,6 +433,7 @@ $voters = $stmtVoters->fetchAll();
                                     <th class="px-4 py-3">No</th>
                                     <th class="px-4 py-3">NISN (Username)</th>
                                     <th class="px-4 py-3">Nama Siswa</th>
+                                    <th class="px-4 py-3">Kelas / Peran</th>
                                     <th class="px-4 py-3 text-center">Status</th>
                                     <th class="px-4 py-3">Pilihan / Waktu</th>
                                     <th class="px-4 py-3 text-right">Aksi</th>
@@ -430,7 +442,7 @@ $voters = $stmtVoters->fetchAll();
                             <tbody class="divide-y divide-slate-100 text-slate-700">
                                 <?php if (empty($voters)): ?>
                                     <tr>
-                                        <td colspan="7" class="px-4 py-8 text-center text-slate-400">
+                                        <td colspan="8" class="px-4 py-8 text-center text-slate-400">
                                             Tidak ada data pemilih ditemukan.
                                         </td>
                                     </tr>
@@ -443,6 +455,11 @@ $voters = $stmtVoters->fetchAll();
                                             <td class="px-4 py-3 font-medium text-slate-400"><?= $no++ ?></td>
                                             <td class="px-4 py-3 font-mono text-indigo-600 font-semibold"><?= sanitize($v['nisn']) ?></td>
                                             <td class="px-4 py-3 font-medium text-slate-900"><?= sanitize($v['nama']) ?></td>
+                                            <td class="px-4 py-3 font-medium text-slate-600">
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-md text-2xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                                                    <?= sanitize($v['kelas'] ?? 'Siswa') ?>
+                                                </span>
+                                            </td>
                                             <td class="px-4 py-3 text-center">
                                                 <?php if ($v['status_memilih'] == 1): ?>
                                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
